@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -36,7 +37,6 @@ public class CoolDatePicker extends LinearLayout {
 
     private OnDateChangedListener onDateChangedListener;
 
-    private static int calendarViewTextSize = 70;
     private static int calendarViewTextColor = Color.parseColor("#424242");
     private static int calendarViewTextMonthColor = Color.parseColor("#2800bcd4");
     private static int calendarViewTextFoucsColor = Color.parseColor("#FAFAFA");
@@ -46,41 +46,41 @@ public class CoolDatePicker extends LinearLayout {
     private static int titleTextColor = Color.parseColor("#FAFAFA");
     private static int titleBackgroundColor = Color.parseColor("#00BCD4");
 
+    private Calendar calendar = Calendar.getInstance();
+
     public interface OnDateChangedListener {
         void onDateChanged(int year, int month, int day, String subText);
     }
 
     public CoolDatePicker(Context context) {
-        super(context);
-
-        initPicker();
+        this(context, null);
     }
 
     public CoolDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        initStylealbe(context, attrs);
-        initPicker();
+        initPicker(context, attrs);
     }
 
-    private void initStylealbe(Context context, AttributeSet attrs) {
+
+    private void initPicker(Context context, AttributeSet attrs) {
+
+        this.setOrientation(VERTICAL);
+        onAddTitleLayout(context, attrs);
+        initCalendarViewStylealbe(context, attrs);
+        onAddRecyclerView();
+
+    }
+
+    private void initCalendarViewStylealbe(Context context, AttributeSet attrs) {
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CoolDatePicker);
 
-        calendarViewTextSize = typedArray.getInteger(R.styleable.CoolDatePicker_calendar_textSize, 70);
         calendarViewTextColor = typedArray.getColor(R.styleable.CoolDatePicker_calendar_textColor, Color.parseColor("#424242"));
         calendarViewTextMonthColor = typedArray.getColor(R.styleable.CoolDatePicker_calendar_textMonthColor, Color.parseColor("#2800bcd4"));
         calendarViewTextFoucsColor = typedArray.getColor(R.styleable.CoolDatePicker_calendar_textFoucsColor, Color.parseColor("#FAFAFA"));
         calendarViewCircleFoucsColor = typedArray.getColor(R.styleable.CoolDatePicker_calendar_circleFoucsColor, Color.parseColor("#00BCD4"));
         calendarViewBackground = typedArray.getColor(R.styleable.CoolDatePicker_calendar_backgroundColor, Color.parseColor("#0000E4FF"));
-
-    }
-
-    private void initPicker() {
-
-        this.setOrientation(VERTICAL);
-        onAddTitleLayout();
-        onAddRecyclerView();
 
     }
 
@@ -98,10 +98,17 @@ public class CoolDatePicker extends LinearLayout {
         this.addView(recyclerView);
     }
 
-    private void onAddTitleLayout() {
+    private void onAddTitleLayout(Context context, AttributeSet attrs) {
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CoolDatePicker);
 
         LinearLayout.LayoutParams titleLinearLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams textLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        int titleTextMonthScaleSize = getResources().getDimensionPixelSize(R.dimen.title_text_month);
+        int titleTextDayScaleSize = getResources().getDimensionPixelSize(R.dimen.title_text_day);
+        int titleTextDayOfWeekScaleSize = getResources().getDimensionPixelSize(R.dimen.title_text_day_of_week);
+        int titleTextYearScaleSize = getResources().getDimensionPixelSize(R.dimen.title_text_year);
 
         titleTextLinearLayout = new LinearLayout(getContext());
         titleLinearLayout = new LinearLayout(getContext());
@@ -115,14 +122,16 @@ public class CoolDatePicker extends LinearLayout {
         titleTextLinearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
         textDay.setLayoutParams(textLayoutParams);
-        textDay.setTextSize(60);
+        //textDay.setTextSize(typedArray.getInteger(R.styleable.CoolDatePicker_title_textDaySize, 60));
+        textDay.setTextSize(titleTextDayScaleSize);
         textDay.setText("4");
-        textDay.setTextColor(titleTextColor);
+        textDay.setTextColor(typedArray.getColor(R.styleable.CoolDatePicker_title_textDayColor, titleTextColor));
 
         textDayOfWeek.setLayoutParams(textLayoutParams);
-        textDayOfWeek.setTextSize(30);
+        //textDayOfWeek.setTextSize(typedArray.getInteger(R.styleable.CoolDatePicker_title_textDayOfWeekSize, 30));
+        textDayOfWeek.setTextSize(titleTextDayOfWeekScaleSize);
         textDayOfWeek.setText("星期日");
-        textDayOfWeek.setTextColor(titleTextColor);
+        textDayOfWeek.setTextColor(typedArray.getColor(R.styleable.CoolDatePicker_title_textDayOfWeekColor, titleTextColor));
 
         titleTextLinearLayout.addView(textDay);
         titleTextLinearLayout.addView(textDayOfWeek);
@@ -132,14 +141,16 @@ public class CoolDatePicker extends LinearLayout {
         titleLinearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 
         textMonth.setLayoutParams(textLayoutParams);
-        textMonth.setTextSize(40);
+        //textMonth.setTextSize(typedArray.getInteger(R.styleable.CoolDatePicker_title_textMonthSize, 40));
+        textMonth.setTextSize(titleTextMonthScaleSize);
         textMonth.setText("十月");
-        textMonth.setTextColor(titleTextColor);
+        textMonth.setTextColor(typedArray.getColor(R.styleable.CoolDatePicker_title_textMonthColor, titleTextColor));
 
         textYear.setLayoutParams(textLayoutParams);
-        textYear.setTextSize(40);
+        //textYear.setTextSize(typedArray.getInteger(R.styleable.CoolDatePicker_title_textYearSize, 40));
+        textYear.setTextSize(titleTextYearScaleSize);
         textYear.setText("2015");
-        textYear.setTextColor(titleTextColor);
+        textYear.setTextColor(typedArray.getColor(R.styleable.CoolDatePicker_title_textYearColor, titleTextColor));
 
         titleLinearLayout.setBackgroundColor(titleBackgroundColor);
         titleLinearLayout.addView(textMonth);
@@ -151,6 +162,8 @@ public class CoolDatePicker extends LinearLayout {
 
     private void onInitCalendarItem() {
 
+        int calendarTextScaleSize = getResources().getDimensionPixelSize(R.dimen.calendar_text_size);
+
         for(int i = 0 ; i < 12 ; i++) {
 
             Calendar calendar = Calendar.getInstance();
@@ -159,7 +172,7 @@ public class CoolDatePicker extends LinearLayout {
             CalendarView calendarView = new CalendarView(getContext());
             calendarView.setCalendar(calendar);
             calendarView.setBackgroundColor(calendarViewBackground);
-            calendarView.setTextSize(calendarViewTextSize);
+            calendarView.setTextSize(calendarTextScaleSize);
             calendarView.setTextColor(calendarViewTextColor);
             calendarView.setTextFoucsColor(calendarViewTextFoucsColor);
             calendarView.setTextMonthColor(calendarViewTextMonthColor);
@@ -177,10 +190,93 @@ public class CoolDatePicker extends LinearLayout {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.addOnScrollListener(onScrollListener);
 
         Calendar calendar = Calendar.getInstance();
         recyclerView.scrollToPosition(calendar.get(Calendar.MONTH));
 
+    }
+
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            if(linearLayoutManager.findFirstVisibleItemPosition() == 4 && dy > -100) {
+                insterLastCalendarItem(lastYearState - 1);
+            } else if(linearLayoutManager.findLastVisibleItemPosition() == recyclerViewAdapter.getItemCount() - 2 && dy > 100) {
+                insterNewCalendarItem(newYearState + 1);
+            }
+
+        }
+    };
+
+    private int lastYearState = 2015;
+    private int newYearState = 2015;
+
+    private void insterLastCalendarItem(int year) {
+
+        int calendarTextScaleSize = getResources().getDimensionPixelSize(R.dimen.calendar_text_size);
+
+        for(int i = 0 ; i < 12 ; i++) {
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, (i+1), 0);
+
+            CalendarView calendarView = new CalendarView(getContext());
+            calendarView.setCalendar(calendar);
+            calendarView.setBackgroundColor(calendarViewBackground);
+            calendarView.setTextSize(calendarTextScaleSize);
+            calendarView.setTextColor(calendarViewTextColor);
+            calendarView.setTextFoucsColor(calendarViewTextFoucsColor);
+            calendarView.setTextMonthColor(calendarViewTextMonthColor);
+            calendarView.setCircleFoucsColor(calendarViewCircleFoucsColor);
+
+            CalendarItem calendarItem = new CalendarItem();
+            calendarItem.setCalendar(calendar);
+            calendarItem.setCalendarView(calendarView);
+            recyclerViewAdapter.insterCalendarItem(i, calendarItem);
+
+            if(lastYearState != calendar.get(Calendar.YEAR)) {
+                lastYearState = calendar.get(Calendar.YEAR);
+            }
+        }
+
+    }
+
+    private void insterNewCalendarItem(int year) {
+
+        int calendarTextScaleSize = getResources().getDimensionPixelSize(R.dimen.calendar_text_size);
+
+        for(int i = 0 ; i < 12 ; i++) {
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, (i+1), 0);
+
+            CalendarView calendarView = new CalendarView(getContext());
+            calendarView.setCalendar(calendar);
+            calendarView.setBackgroundColor(calendarViewBackground);
+            calendarView.setTextSize(calendarTextScaleSize);
+            calendarView.setTextColor(calendarViewTextColor);
+            calendarView.setTextFoucsColor(calendarViewTextFoucsColor);
+            calendarView.setTextMonthColor(calendarViewTextMonthColor);
+            calendarView.setCircleFoucsColor(calendarViewCircleFoucsColor);
+
+            CalendarItem calendarItem = new CalendarItem();
+            calendarItem.setCalendar(calendar);
+            calendarItem.setCalendarView(calendarView);
+            recyclerViewAdapter.insterCalendarItem(calendarItem);
+
+            if(newYearState != calendar.get(Calendar.YEAR)) {
+                newYearState = calendar.get(Calendar.YEAR);
+            }
+        }
     }
 
     private RecyclerViewAdapter.OnDateChangeListener onDateChangeListener = new RecyclerViewAdapter.OnDateChangeListener() {
@@ -188,7 +284,7 @@ public class CoolDatePicker extends LinearLayout {
         public void onDateChange(int year, int month, int day, String subText) {
 
             textYear.setText("" + year);
-            textMonth.setText("" + month + " Month");
+            textMonth.setText(getChineseOfMonth(month) + "月");
             textDay.setText("" + day);
             textDayOfWeek.setText("星期" + subText);
 
@@ -199,53 +295,15 @@ public class CoolDatePicker extends LinearLayout {
         }
     };
 
+    private String getChineseOfMonth(int month) {
+
+        String[] chineseOfMonth = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"};
+
+        return chineseOfMonth[month - 1];
+    }
+
     public void setOnDateChangedListener(OnDateChangedListener onDateChangedListener) {
         this.onDateChangedListener = onDateChangedListener;
-    }
-
-    public void setTitleBackgroundColor(int color) {
-        titleLinearLayout.setBackgroundColor(color);
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void setTitleBackground(Drawable drawable) {
-        titleLinearLayout.setBackground(drawable);
-    }
-
-    public void setTitleBackgroundResource(int resId) {
-        titleLinearLayout.setBackgroundResource(resId);
-    }
-
-    public void setTitleTextYearSize(int size) {
-        textYear.setTextSize(size);
-    }
-
-    public void setTitleTextMonthSize(int size) {
-        textMonth.setTextSize(size);
-    }
-
-    public void setTitleTextDaySize(int size) {
-        textDay.setTextSize(size);
-    }
-
-    public void setTitleTextDayOfWeekSize(int size) {
-        textDayOfWeek.setTextSize(size);
-    }
-
-    public void setTitleTextYearColor(int color) {
-        textYear.setTextColor(color);
-    }
-
-    public void setTitleTextMonthColor(int color) {
-        textMonth.setTextColor(color);
-    }
-
-    public void setTitleTextDayColor(int color) {
-        textDay.setTextColor(color);
-    }
-
-    public void setTitleTextDayOfWeekColor(int color) {
-        textDayOfWeek.setTextColor(color);
     }
 
 }

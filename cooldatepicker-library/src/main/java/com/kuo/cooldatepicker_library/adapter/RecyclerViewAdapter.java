@@ -2,6 +2,7 @@ package com.kuo.cooldatepicker_library.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         viewHolder.calendarView.setCalendar(tableLayouts.get(i).getCalendar());
         viewHolder.calendarView.setOnClickListener(onClickListener);
 
+        //Log.d("Itme", "" + i);
+
     }
 
     @Override
@@ -71,5 +74,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void setOnDateChangeListener(OnDateChangeListener onDateChangeListener) {
         this.onDateChangeListener = onDateChangeListener;
     }
+
+    public void insterCalendarItem(int index, CalendarItem calendarItem) {
+
+        tableLayouts.add(index, calendarItem);
+        notifyItemInserted(index);
+
+    }
+
+    public void insterCalendarItem(CalendarItem calendarItem) {
+
+        tableLayouts.add(calendarItem);
+        notifyItemInserted(getItemCount());
+
+    }
+
 
 }
