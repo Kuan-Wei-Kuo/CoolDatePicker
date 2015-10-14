@@ -6,17 +6,17 @@
 
 <img width="300" height="500" src="https://github.com/Kuan-Wei-Kuo/CoolDatePicker/blob/master/art/Screenshot_2015-10-12-09-51-20.png?raw=true"/>
 
-##TitleLayout
+###TitleLayout
 
 屬於上半部藍色部分，我提供了可以修改顏色與大小的方法。
 
-##CalendarView
+###CalendarView
 
 這部分與RecyclerView結合，也提供了顏色以及大小的方法。
 
 #如何使用
 
-##Step 1. 將CoolDatePicker加入你的Layout
+###Step 1. 將CoolDatePicker加入你的Layout
 
 ```xml
 <com.kuo.cooldatepicker_library.view.CoolDatePicker
@@ -24,7 +24,7 @@
         android:layout_height="match_parent"></com.kuo.cooldatepicker_library.view.CoolDatePicker>
 ```
 
-##Step 2. 如果你想換顏色
+###Step 2. 如果你想換顏色
 
 因為這個專案我是使用Styleable作為主要更改，不想使用其他方式是因為消耗的資源太多，
 假設我已經瀏覽了一堆CalendarView，如果要更改顏色勢必要重新將我的CalendarView繪製一遍，這不是個好方法。
@@ -50,7 +50,7 @@
 
 這部分我想應該不用解釋太多，所以就...自行嘗試吧！
 
-##Step 3. 修改自體大小
+###Step 3. 修改自體大小
 
 這部分也是使用xml修改，不過修改部分可能很奇怪，其實是我有點懶惰啦！
 我想讓Canvas適應螢幕大小產生出我們要的字體大小，所以使用dimens.xml可以快速的解決問題。
@@ -79,17 +79,17 @@
 
 CalendarView這部分都是使用Canvas繪製，有人會想說怎麼不使用簡單的TableLayout或GridView製作呢？
 
-##第一點，其實是RecyclerView與ViewHolder的問題，其實我是有點懶得去想為什麼？
+###第一點，其實是RecyclerView與ViewHolder的問題，其實我是有點懶得去想為什麼？
 
 主要也是當你每次加入一個View進去，其實並不是很好的方法，很容易Crash並且一直加入View，是閒手機不夠熱喔？
 因為每個月份的數目不同，沒辦法去固定，沒辦法固定就得使用動態產生的方法，動態產生的方法又需要一直加入View，手機不好摧殘...
 
-##第二點，其實很多好用的View與Canvas息息相關！
+###第二點，其實很多好用的View與Canvas息息相關！
 
 GitHub上有許多帥氣可愛美麗的控件，但他們與Canvas息息相關，扣的可深的帽子！
 因為我們Canvas有很大的自由變化，開發者想幹嘛就幹嘛，只要你做得出來，在與OnTouch做結合，剩下的請自行腦補！
 
-##第三點，如有問題請趕快告訴我，我會盡可能的修改與討論！
+###第三點，如有問題請趕快告訴我，我會盡可能的修改與討論！
 
 P.S. 程式碼有點亂，我還是會慢慢更新與優化的，不過也得有空閒...
 
