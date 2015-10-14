@@ -4,7 +4,7 @@
 
 依照圖片介紹一下：
 
-![](https://github.com/Kuan-Wei-Kuo/CoolDatePicker/blob/master/art/Screenshot_2015-10-12-09-51-20.png?raw=true)
+<img style="width=250 height=250"  src="https://github.com/Kuan-Wei-Kuo/CoolDatePicker/blob/master/art/Screenshot_2015-10-12-09-51-20.png?raw=true"/>
 
 TitleLayout
 
