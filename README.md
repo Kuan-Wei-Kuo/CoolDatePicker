@@ -4,7 +4,7 @@
 
 依照圖片介紹一下：
 
-![](https://drive.google.com/file/d/0B5fOJF9g7N2SWld5N2xLT2w1c2s/view?usp=sharing)
+![](https://github.com/Kuan-Wei-Kuo/CoolDatePicker/blob/master/art/Screenshot_2015-10-12-09-51-20.png?raw=true)
 
 TitleLayout
 
