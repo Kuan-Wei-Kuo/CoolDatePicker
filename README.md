@@ -61,6 +61,16 @@
 如果還是不能自適應...屙，這邊看你是要自己改還是回報我一下，我也將使用演算法將螢幕自體字適應大小算出來，
 但可能沒辦法像現在可以改各種字體大小的自由度了。
 
+###Step 4. 監聽CoolDatePicker
+
+在裡面我也有設定一個監聽的東西...
+
+```java
+ setOnDateChangeListener
+```
+
+一樣是這麼簡單的一句，跟OnClickListener用法差不多，應該不需要多講了！
+
 ```xml
   <dimen name="calendar_text_size">25dp</dimen>
 
